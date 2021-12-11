@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
+
 public class MainManager : MonoBehaviour
 {
     public Text nombre ;
@@ -13,8 +14,9 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text bestScoreText;
     public GameObject GameOverText;
-    
+    public int bestPoint;
     private bool m_Started = false;
     private int m_Points;
     
@@ -24,9 +26,11 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SaveName.instance.LoadNameBestScore();
+        SaveName.instance.LoadPointBest();
 
         nombre.text ="Player Name: " + SaveName.instance.NombreText;
-
+        bestScoreText.text = $"BestScore Score: {SaveName.instance.NombrebestText}: {SaveName.instance.bestScore}";
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -40,6 +44,7 @@ public class MainManager : MonoBehaviour
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
                 brick.PointValue = pointCountArray[i];
                 brick.onDestroyed.AddListener(AddPoint);
+        
             }
         }
     }
@@ -73,6 +78,7 @@ public class MainManager : MonoBehaviour
         
         m_Points += point;
         ScoreText.text = $"Score :{m_Points}";
+        BestScore();
     }
 
     public void GameOver()
@@ -80,6 +86,20 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
+    void BestScore()
+    {
+        if (bestPoint< m_Points)
+        {
+            bestPoint = m_Points;
+            bestScoreText.text = $"BestScore Score: {SaveName.instance.NombreText}: {m_Points}";
+            SaveName.instance.bestScore = m_Points;
+            SaveName.instance.SaveNameBestScore();
+            SaveName.instance.SavePointBest();
+        }
+    }
 
-   
+
+
+
+
 }
