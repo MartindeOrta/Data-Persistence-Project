@@ -28,6 +28,7 @@ public class MainManager : MonoBehaviour
     {
         SaveName.instance.LoadNameBestScore();
         SaveName.instance.LoadPointBest();
+       bestPoint= SaveName.instance.bestScore;
 
         nombre.text ="Player Name: " + SaveName.instance.NombreText;
         bestScoreText.text = $"BestScore Score: {SaveName.instance.NombrebestText}: {SaveName.instance.bestScore}";
